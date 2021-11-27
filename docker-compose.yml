@@ -1,0 +1,33 @@
+version: "3"
+services:
+  react-app:
+    image: frontend/it18120530
+    stdin_open: true
+    ports: 
+      - "3000:3000"
+    networks:
+      - mern-app
+  api-server:
+    image: backend/it18120530
+    ports:
+      - "4000:4000"
+    networks:
+      - mern-app
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:3.6.19-xenial
+    ports:
+      - "27017:27017"
+    environment:
+     - MONGO_INITDB_DATABASE=test
+    networks:
+      - mern-app
+    volumes:
+      - mongo-data:/data/db
+networks:
+  mern-app:
+    driver: bridge
+volumes:
+  mongo-data:
+    driver: local
